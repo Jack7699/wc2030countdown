@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yalla Vamos 2030 · Countdown</title>
+<style>
+:root{--r:#e4202b;--g:#1faa59;--y:#ffd21f;--b:#2aa6c9;--bg:#0b0f1a;--fg:#fff;--card:rgba(255,255,255,.07);--line:rgba(255,255,255,.16);--mut:#aab3c5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#fff7e3;--fg:#10131c;--card:rgba(255,255,255,.75);--line:rgba(16,19,28,.14);--mut:#555e70}}
+:root[data-theme="light"]{--bg:#fff7e3;--fg:#10131c;--card:rgba(255,255,255,.75);--line:rgba(16,19,28,.14);--mut:#555e70}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Trebuchet MS",system-ui,-apple-system,sans-serif;overflow-x:hidden;min-height:100vh}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.45;z-index:0;animation:fl 14s ease-in-out infinite alternate}
+.b1{width:46vmax;height:46vmax;background:var(--r);left:-15vmax;top:-12vmax}
+.b2{width:40vmax;height:40vmax;background:var(--g);right:-14vmax;top:20vh;animation-delay:-4s}
+.b3{width:34vmax;height:34vmax;background:var(--y);left:20vw;bottom:-18vmax;animation-delay:-8s}
+@keyframes fl{to{transform:translate(6vmax,5vmax) scale(1.15)}}
+main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:28px 18px 60px;text-align:center}
+.logo{width:min(230px,52vw);background:#fff;border-radius:34px;padding:14px;box-shadow:0 18px 50px rgba(0,0,0,.35),0 0 0 6px var(--y);animation:bob 4s ease-in-out infinite;cursor:pointer;transform:rotate(-3deg)}
+@keyframes bob{50%{transform:translateY(-12px) rotate(3deg)}}
+.tag{display:inline-block;margin:26px 0 6px;padding:6px 16px;border-radius:99px;background:var(--y);color:#10131c;font-weight:800;letter-spacing:.16em;font-size:.78rem;text-transform:uppercase}
+h1{font-size:clamp(2.2rem,8vw,5rem);margin:.1em 0;line-height:1;font-weight:900;text-transform:uppercase;letter-spacing:-.02em}
+h1 span:nth-child(1){color:var(--r)}h1 span:nth-child(2){color:var(--y)}h1 span:nth-child(3){color:var(--g)}
+.hosts{color:var(--mut);margin:.5rem 0 2.2rem;font-size:1.05rem}
+.grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:clamp(8px,2vw,18px)}
+.box{min-width:0;transition:transform .15s ease-out;box-shadow:0 14px 40px -12px var(--c);position:relative;background:var(--card);border:1px solid var(--line);backdrop-filter:blur(12px);border-radius:24px;padding:clamp(14px,3vw,30px) 4px;overflow:hidden}
+.box:before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--c)}
+.box:nth-child(1){--c:var(--r)}.box:nth-child(2){--c:var(--y)}.box:nth-child(3){--c:var(--g)}.box:nth-child(4){--c:var(--b)}
+.num{font-size:clamp(1.6rem,8.2vw,5.4rem);white-space:nowrap;text-shadow:0 0 28px var(--c);font-weight:900;font-variant-numeric:tabular-nums;line-height:1;display:inline-block}
+.num.pop{animation:pop .35s}
+@keyframes pop{40%{transform:scale(1.18) rotate(-3deg);color:var(--c)}}
+.lbl{margin-top:8px;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.bar{height:16px;border-radius:99px;background:var(--line);margin:2.4rem 0 .6rem;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--r),var(--y),var(--g),var(--b));background-size:200% 100%;animation:sh 4s linear infinite;border-radius:99px}
+@keyframes sh{to{background-position:200% 0}}
+.sub{color:var(--mut);font-size:.9rem}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:2.4rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;text-align:left;backdrop-filter:blur(12px)}
+.card h3{margin:0 0 4px;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
+.card p{margin:0;font-size:1.25rem;font-weight:800}
+.cities{margin:2.4rem -18px 0;overflow:hidden;border-block:2px solid var(--line);padding:12px 0;white-space:nowrap}
+.cities div{display:inline-block;animation:mq 40s linear infinite;font-weight:800;font-size:1.1rem;text-transform:uppercase;letter-spacing:.1em}
+.cities b{color:var(--y);margin:0 14px}
+@keyframes mq{to{transform:translateX(-50%)}}
+button{margin-top:2rem;font:inherit;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border:0;border-radius:99px;padding:14px 30px;background:var(--r);color:#fff;cursor:pointer;box-shadow:0 8px 0 #9c1219;transition:transform .1s}
+button:active{transform:translateY(6px);box-shadow:0 2px 0 #9c1219}
+.live{font-size:clamp(2rem,8vw,4rem);font-weight:900;grid-column:1/-1;color:var(--y)}
+.logo{position:relative;z-index:1}
+.stage{position:absolute;top:28px;left:50%;width:min(258px,58vw);height:min(270px,60vw);transform:translateX(-50%);pointer-events:none}
+.rays{position:absolute;left:50%;top:50%;width:230%;aspect-ratio:1;translate:-50% -50%;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,210,31,.35) 0 6deg,transparent 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 8%,transparent 62%);mask:radial-gradient(circle,#000 8%,transparent 62%);animation:spin 40s linear infinite}
+.orbit{position:absolute;inset:-34px;animation:spin 7s linear infinite}
+.orbit span{position:absolute;left:50%;top:0;font-size:2rem;margin-left:-1rem;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));animation:spin 7s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rays{animation-name:spin2}@keyframes spin2{to{rotate:360deg}}
+h1 span{display:inline-block;text-shadow:0 0 36px currentColor;animation:wave 2.4s ease-in-out infinite}
+h1 span:nth-child(2){animation-delay:.25s}h1 span:nth-child(3){animation-delay:.5s}
+@keyframes wave{50%{transform:translateY(-10px) scale(1.04)}}
+.tag{animation:bob 3s ease-in-out infinite}
+.foot{margin-top:2rem;color:var(--mut);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase}
+section{margin-top:3.6rem;text-align:left}
+h2{font-size:clamp(1.5rem,5vw,2.5rem);text-transform:uppercase;margin:0 0 1.2rem;font-weight:900;display:flex;align-items:center;gap:14px;letter-spacing:-.01em}
+h2:after{content:"";flex:1;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--r),var(--y),var(--g),var(--b))}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.fact{background:var(--card);border:1px solid var(--line);border-left:7px solid var(--c);border-radius:20px;padding:18px;backdrop-filter:blur(12px);transition:transform .2s}
+.fact:hover{transform:translateY(-6px) rotate(-1deg)}
+.fact big{display:block;font-size:clamp(2rem,6vw,2.8rem);font-weight:900;color:var(--c);line-height:1.05}
+.fact span{color:var(--mut);font-size:.92rem;line-height:1.35;display:block;margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 16px;font-weight:800}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{margin:0;padding:10px 20px;box-shadow:none;background:var(--card);color:var(--fg);border:1px solid var(--line);letter-spacing:.06em;font-size:.85rem}
+.tabs button.on{background:var(--y);color:#10131c;border-color:var(--y)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;backdrop-filter:blur(12px)}
+.row{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.row:last-child{border:0}
+.row b{font-size:1.05rem}.row em{font-style:normal;color:var(--mut);font-size:.85rem}
+.row .cap{font-weight:900;text-align:right;color:var(--c)}
+.meter{grid-column:1/-1;height:8px;border-radius:8px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--c);border-radius:8px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.note{color:var(--mut);font-size:.8rem;margin-top:10px}
+.tl{border-left:4px solid var(--line);margin-left:10px;padding-left:24px}
+.tl>div{position:relative;margin-bottom:24px}
+.tl>div:before{content:"";position:absolute;left:-36px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--c);border:4px solid var(--bg)}
+.tl small{color:var(--c);letter-spacing:.14em;text-transform:uppercase;font-weight:900}
+.tl p{margin:3px 0 0;font-size:1.02rem}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .8s,transform .8s}
+.rv.in{opacity:1;transform:none}
+.sp{position:fixed;left:0;top:0;height:5px;width:0;z-index:9;background:linear-gradient(90deg,var(--r),var(--y),var(--g),var(--b))}
+.flags{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.flag{margin:0;box-shadow:none;background:var(--card);color:var(--fg);border:2px solid var(--line);border-radius:22px;padding:16px 8px;letter-spacing:0;text-transform:none;font-size:1rem;transition:transform .2s,border-color .2s,box-shadow .2s}
+.flag:active{transform:scale(.96);box-shadow:none}
+.flag:hover{transform:translateY(-5px)}
+.flag.on{border-color:var(--c);transform:translateY(-8px);box-shadow:0 16px 34px -12px var(--c)}
+.flag .em{font-size:2.7rem;display:block}
+.panel{margin-top:16px;background:var(--card);border:1px solid var(--line);border-top:8px solid var(--c);border-radius:24px;padding:22px;display:grid;grid-template-columns:1.25fr 1fr;gap:24px;backdrop-filter:blur(12px);animation:in .5s}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+@media (max-width:720px){.panel{grid-template-columns:1fr}}
+.panel h3{margin:0 0 4px;font-size:2rem}
+.panel ul{padding-left:20px;margin:12px 0 0;line-height:1.55}
+.panel em{color:var(--mut)}
+.big{background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:20px;text-align:center}
+.big small{color:var(--mut);letter-spacing:.16em;text-transform:uppercase;font-weight:800;font-size:.72rem}
+.big strong{display:block;font-size:1.35rem;margin-top:6px}
+.big b{display:block;font-size:clamp(2.2rem,8vw,3rem);font-weight:900;color:var(--c);margin-top:12px;font-variant-numeric:tabular-nums}
+.big .meter{margin-top:12px}
+.chips button.chip{margin:0;box-shadow:none;color:var(--fg);letter-spacing:0;text-transform:none;font-weight:800;cursor:pointer;font-size:1rem;padding:8px 16px}
+.chips button.chip.on{background:var(--y);color:#10131c;border-color:var(--y)}
+.flip{position:relative;height:190px;perspective:900px;cursor:pointer}
+.flip div{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;transition:transform .6s;font-weight:700;line-height:1.35}
+.flip .f{background:var(--c);color:#10131c;font-size:1.25rem;font-weight:900;text-transform:uppercase}
+.flip .b{background:var(--card);border:2px solid var(--c);transform:rotateY(180deg);backdrop-filter:blur(12px)}
+.flip.on .f{transform:rotateY(-180deg)}.flip.on .b{transform:rotateY(0)}
+.quiz{padding:22px}.quiz h3{margin:6px 0 14px;font-size:1.4rem}.quiz small{color:var(--mut);font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.clk{font-variant-numeric:tabular-nums}
+.fab{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:9;display:flex;flex-direction:column;gap:8px}
+.fab button{margin:0;width:46px;height:46px;padding:0;border-radius:50%;font-size:1.2rem;box-shadow:0 6px 18px rgba(0,0,0,.35);background:var(--card);color:var(--fg);border:1px solid var(--line);backdrop-filter:blur(10px);letter-spacing:0}
+.fab button:active{transform:scale(.9);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<canvas id="cv"></canvas>
+<main>
+  <div class="stage"><div class="rays"></div><div class="orbit"><span>⚽</span></div></div>
+  <img class="logo" id="logo" alt="Yalla Vamos 2030 logo" src="data:image/png;base64,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">
+  <div><span class="tag">The centennial World Cup</span></div>
+  <h1><span>Yalla</span> <span>Vamos</span> <span>2030</span></h1>
+  <p class="hosts">Morocco · Portugal · Spain<br>plus centenary matches in Uruguay, Argentina and Paraguay</p>
+  <div id="clock" class="grid">
+    <div class="box"><div class="num" id="d">0</div><div class="lbl">Days</div></div>
+    <div class="box"><div class="num" id="h">00</div><div class="lbl">Hours</div></div>
+    <div class="box"><div class="num" id="m">00</div><div class="lbl">Minutes</div></div>
+    <div class="box"><div class="num" id="s">00</div><div class="lbl">Seconds</div></div>
+  </div>
+  <div class="bar"><i id="p"></i></div>
+  <div class="sub" id="pt"></div>
+  <div class="info">
+    <div class="card"><h3>Kickoff</h3><p>8 June 2030</p></div>
+    <div class="card"><h3>Final</h3><p>21 July 2030</p></div>
+    <div class="card"><h3>Weeks to go</h3><p id="wk">0</p></div>
+    <div class="card"><h3>Weekends left</h3><p id="we">0</p></div>
+  </div>
+  <div class="cities"><div id="mq"></div></div>
+  <div class="sp" id="sp"></div>
+  <section class="rv"><h2>The essentials</h2>
+    <div class="facts">
+      <div class="fact" style="--c:var(--r)"><big>24th</big><span>FIFA World Cup, played 8 June to 21 July 2030, about 44 days of football.</span></div>
+      <div class="fact" style="--c:var(--y)"><big>3 continents</big><span>The first World Cup hosted across more than one confederation: Africa, Europe and South America.</span></div>
+      <div class="fact" style="--c:var(--g)"><big>100 years</big><span>Since the first edition in 1930. A special centenary match and celebration will be held at Estadio Centenario in Montevideo.</span></div>
+      <div class="fact" style="--c:var(--b)"><big>North Africa</big><span>The first World Cup there, and the second in Africa after South Africa 2010.</span></div>
+      <div class="fact" style="--c:var(--r)"><big>20 stadiums</big><span>Candidate venues across 17 cities: 6 in Morocco, 3 in Portugal and 11 in Spain. Final list still to be confirmed.</span></div>
+      <div class="fact" style="--c:var(--y)"><big>115,000</big><span>Seats planned for the new Hassan II Stadium in Casablanca, the biggest on the list.</span></div>
+      <div class="fact" style="--c:var(--g)"><big>Spain</big><span>The first defending champions to later host the tournament, after winning their second World Cup in 2026.</span></div>
+      <div class="fact" style="--c:var(--b)"><big>64 teams?</big><span>CONMEBOL announced a one-off 64-team expansion, but FIFA has not confirmed it. The team count is still to be announced.</span></div>
+    </div>
+    <div class="chips"><span class="chip">🇲🇦 Morocco</span><span class="chip">🇵🇹 Portugal</span><span class="chip">🇪🇸 Spain</span><span class="chip">🇺🇾 Uruguay</span><span class="chip">🇦🇷 Argentina</span><span class="chip">🇵🇾 Paraguay</span></div>
+    <div class="note">All six hosts have automatically qualified.</div>
+  </section>
+  <section class='rv'><h2>Host nations</h2>
+    <div class='flags' id='flags'></div>
+    <div class='panel' id='panel'></div>
+    <div class='note'>Tap a flag to meet each host and see its biggest stadium.</div>
+  </section>
+  <section class="rv"><h2>Stadiums</h2>
+    <div class="tabs" id="tabs"></div>
+    <div class="list" id="list"></div>
+    <div class="note">Capacities are the planned figures for candidate venues, shown as a bar against the largest, 115,000.</div>
+  </section>
+  <section class="rv"><h2>Road to 2030</h2>
+    <div class="tl">
+      <div style="--c:var(--r)"><small>October 2020</small><p>Portugal and Spain announce they plan a joint bid.</p></div>
+      <div style="--c:var(--y)"><small>March 2023</small><p>King Mohammed VI announces Morocco joins the bid.</p></div>
+      <div style="--c:var(--g)"><small>October 2023</small><p>The FIFA Council backs the bid, with centenary matches in South America.</p></div>
+      <div style="--c:var(--b)"><small>11 December 2024</small><p>FIFA confirms Morocco, Portugal and Spain as hosts, by acclamation.</p></div>
+      <div style="--c:var(--r)"><small>2026</small><p>Spain win the World Cup and become the first defending champions to host the next one.</p></div>
+      <div style="--c:var(--y)"><small>20 July 2026</small><p>CONMEBOL announces a 64-team tournament. FIFA has not confirmed it.</p></div>
+      <div style="--c:var(--g)"><small>8 June 2030</small><p>Kickoff, with the final on 21 July.</p></div>
+    </div>
+    <div class="note">Information as of 12 November 2026. Venues and format may still change.</div>
+  </section>
+  <section class='rv'><h2>Counting it every way</h2><div class='facts' id='units'></div></section>
+  <section class='rv'><h2>Top 5 biggest</h2><div class='list' id='top5'></div><div class='note'>Planned capacities of candidate venues.</div></section>
+  <section class='rv'><h2>Right now in the host cities</h2><div class='facts' id='clocks'></div></section>
+  <section class='rv'><h2>Qualification</h2>
+    <div class='facts'>
+      <div class='fact' style='--c:var(--g)'><big>Hosts</big><span>Morocco, Portugal, Spain, Argentina, Paraguay and Uruguay have all qualified automatically.</span></div>
+      <div class='fact' style='--c:var(--r)'><big>UEFA</big><span>A new format announced in May 2026: the 36 top-ranked countries play in three groups of 12, six games each, with the best of each group qualifying and play-offs for the rest. The other 18 countries form League 2.</span></div>
+      <div class='fact' style='--c:var(--b)'><big>CONCACAF</big><span>Three rounds from September 2027 to 2029. The top two of each final group qualify, and a November 2029 play-in feeds the intercontinental play-offs.</span></div>
+    </div>
+  </section>
+  <section class='rv'><h2>Test your knowledge</h2><div class='list quiz' id='quiz'></div></section>
+  <section class='rv'><h2>Pick your champion</h2><div class='chips' id='picks'></div><div class='note' id='pickmsg'>Choose who you think will lift the trophy on 21 July 2030.</div></section>
+  <section class='rv'><h2>Did you know?</h2><div class='facts' id='flips'></div><div class='note'>Tap a card to flip it.</div></section>
+  <section class='rv'><h2>Where to watch</h2>
+    <div class='chips' id='tv'></div>
+    <div class='note'>Official partners and sponsors</div>
+    <div class='chips' id='sp2'></div>
+  </section>
+  <div class='fab'><button id='th' title='Switch theme'>🌓</button><button id='sh' title='Share'>🔗</button><button id='tp' title='Back to top'>⬆️</button></div>
+  <button id="go">Celebrate! ⚽</button>
+  <div class="foot">Yalla · Vamos · Let’s go</div>
+</main>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)};
+var start=new Date(2030,5,8).getTime(),from=new Date(2026,6,20).getTime();
+var cities=["Casablanca","Rabat","Tangier","Marrakesh","Fez","Agadir","Lisbon","Porto","Madrid","Barcelona","Seville","Bilbao","Valencia","Vigo","Zaragoza","Las Palmas","San Sebastián","Montevideo","Buenos Aires","Asunción"];
+var h=cities.map(function(c){return c+"<b>⚽</b>"}).join("");$("mq").innerHTML=h+h;
+function pad(n){return n<10?"0"+n:""+n}
+function set(id,v){var e=$(id);if(e.textContent!==v){e.textContent=v;e.classList.remove("pop");void e.offsetWidth;e.classList.add("pop")}}
+function tick(){
+  var now=Date.now(),diff=start-now;
+  if(diff<=0){$("clock").innerHTML='<div class="live">It\u2019s kickoff time! \u26BD</div>';$("p").style.width="100%";burst(innerWidth/2,innerHeight/3);return}
+  var s=Math.floor(diff/1000);
+  set("d",""+Math.floor(s/86400));set("h",pad(Math.floor(s%86400/3600)));set("m",pad(Math.floor(s%3600/60)));set("s",pad(s%60));
+  var pct=Math.max(0,Math.min(100,(now-from)/(start-from)*100));
+  $("p").style.width=pct.toFixed(2)+"%";$("pt").textContent=pct.toFixed(1)+"% of the wait is over";
+  $("wk").textContent=Math.floor(diff/6048e5).toLocaleString();$("we").textContent=Math.floor(diff/6048e5).toLocaleString();
+}
+tick();setInterval(tick,1000);
+var cv=$("cv"),x=cv.getContext("2d"),P=[],cols=["#e4202b","#1faa59","#ffd21f","#2aa6c9"];
+function rs(){cv.width=innerWidth;cv.height=innerHeight}rs();addEventListener("resize",rs);
+function burst(px,py){for(var i=0;i<90;i++){var a=Math.random()*6.283,v=3+Math.random()*9;P.push({x:px,y:py,vx:Math.cos(a)*v,vy:Math.sin(a)*v-5,r:4+Math.random()*6,c:cols[i%4],rot:Math.random()*6,l:130+Math.random()*60})}}
+function drift(){if(Math.random()<.06)P.push({x:Math.random()*innerWidth,y:-10,vx:Math.random()*2-1,vy:1+Math.random()*1.5,r:3+Math.random()*4,c:cols[Math.floor(Math.random()*4)],rot:0,l:400,soft:1})}
+function loop(){x.clearRect(0,0,cv.width,cv.height);drift();
+  P=P.filter(function(p){p.x+=p.vx;p.y+=p.vy;if(!p.soft)p.vy+=.25;p.rot+=.15;p.l--;
+    x.save();x.globalAlpha=p.soft?.55:Math.min(1,p.l/40);x.translate(p.x,p.y);x.rotate(p.rot);x.fillStyle=p.c;x.fillRect(-p.r,-p.r/2,p.r*2,p.r);x.restore();
+    return p.l>0&&p.y<innerHeight+20});
+  requestAnimationFrame(loop)}
+loop();
+document.querySelectorAll(".box").forEach(function(b){b.addEventListener("pointermove",function(e){var r=b.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;b.style.transform="perspective(600px) rotateY("+px*22+"deg) rotateX("+(-py*22)+"deg) scale(1.05)"});b.addEventListener("pointerleave",function(){b.style.transform=""})});
+var S={Morocco:["var(--r)",[["Hassan II Stadium","Casablanca",115000,"new build"],["Tangier Grand Stadium","Tangier",75500,"renovation"],["Prince Moulay Abdellah Stadium","Rabat",69500,"new build"],["Fez Stadium","Fez",55800,"renovation"],["Adrar Stadium","Agadir",46000,"renovation"],["Marrakesh Stadium","Marrakesh",45860,"renovation"]]],
+Portugal:["var(--g)",[["Est\u00e1dio da Luz","Lisbon",68100,""],["Est\u00e1dio Jos\u00e9 Alvalade","Lisbon",52095,""],["Est\u00e1dio do Drag\u00e3o","Porto",50033,""]]],
+Spain:["var(--y)",[["Camp Nou","Barcelona",105000,"renovation"],["Bernab\u00e9u","Madrid",83186,""],["Metropolitano Stadium","Madrid",70692,""],["Nou Mestalla","Valencia",70044,"new build"],["Estadio de La Cartuja","Seville",70000,"renovation"],["San Mam\u00e9s","Bilbao",53331,""],["Gran Canaria Stadium","Las Palmas",44500,"renovation"],["Bala\u00eddos","Vigo",44000,"renovation"],["La Romareda","Zaragoza",43110,"new build"],["Anoeta Stadium","San Sebasti\u00e1n",42300,""],["RCDE Stadium","Barcelona",40500,""]]],
+Centenary:["var(--b)",[["Estadio Monumental","Buenos Aires, Argentina",100000,"renovation"],["Estadio Centenario","Montevideo, Uruguay",62782,"renovation"],["Estadio Osvaldo Dom\u00ednguez Dibb","Asunci\u00f3n, Paraguay",46000,"new build"]]]};
+function show(k){var c=S[k][0],h="";S[k][1].forEach(function(s){h+='<div class="row" style="--c:'+c+'"><div><b>'+s[0]+'</b><br><em>'+s[1]+(s[3]?' \u00b7 '+s[3]:'')+'</em></div><div class="cap">'+s[2].toLocaleString()+'</div><div class="meter"><i data-w="'+(s[2]/1150)+'"></i></div></div>'});
+  $("list").innerHTML=h;Array.prototype.forEach.call(document.querySelectorAll("#tabs button"),function(b){b.className=b.textContent===k?"on":""});
+  setTimeout(function(){Array.prototype.forEach.call(document.querySelectorAll(".meter i"),function(i){i.style.width=i.dataset.w+"%"})},60)}
+Object.keys(S).forEach(function(k){var b=document.createElement("button");b.textContent=k;b.onclick=function(){show(k)};$("tabs").appendChild(b)});show("Morocco");
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add("in")})},{threshold:.12});
+Array.prototype.forEach.call(document.querySelectorAll(".rv"),function(e){io.observe(e)});
+addEventListener("scroll",function(){var d=document.documentElement;$("sp").style.width=(scrollY/Math.max(1,d.scrollHeight-innerHeight)*100)+"%"});
+var N={Morocco:{e:'🇲🇦',c:'var(--r)',r:'Co-host',cap:'Rabat',st:['Hassan II Stadium','Casablanca',115000,'new build'],p:['First World Cup in North Africa and the second in Africa after 2010','Six stadiums in six cities: Agadir, Casablanca, Fez, Marrakesh, Rabat and Tangier','Bid for the sixth time before winning hosting rights','Hosts World Cup matches for the first time']},
+Portugal:{e:'🇵🇹',c:'var(--g)',r:'Co-host',cap:'Lisbon',st:['Est\u00e1dio da Luz','Lisbon',68100,'existing stadium'],p:['Three stadiums in two cities, Lisbon and Porto','Lisbon also has Est\u00e1dio Jos\u00e9 Alvalade (52,095) and Porto has Est\u00e1dio do Drag\u00e3o (50,033)','Announced the joint bid with Spain in October 2020','Hosts World Cup matches for the first time']},
+Spain:{e:'🇪🇸',c:'var(--y)',r:'Co-host',cap:'Madrid',st:['Camp Nou','Barcelona',105000,'after renovation'],p:['Eleven stadiums in nine cities, the most of any host','Last hosted the World Cup in 1982','Won the 2026 World Cup, the first defending champions to later host','Second biggest: the Bernab\u00e9u in Madrid at 83,186']},
+Uruguay:{e:'🇺🇾',c:'var(--b)',r:'Centenary match host',cap:'Montevideo',st:['Estadio Centenario','Montevideo',62782,'after renovation'],p:['Hosted the very first World Cup in 1930, and its final','Will stage a special centenary match and celebration at Estadio Centenario','Returns as host for the first time since 1930']},
+Argentina:{e:'🇦🇷',c:'var(--b)',r:'Centenary match host',cap:'Buenos Aires',st:['Estadio Monumental','Buenos Aires',100000,'after renovation'],p:['Will stage one match at Estadio Monumental','Last hosted the World Cup in 1978','Returns as host for the first time since then']},
+Paraguay:{e:'🇵🇾',c:'var(--r)',r:'Centenary match host',cap:'Asunci\u00f3n',st:['Estadio Osvaldo Dom\u00ednguez Dibb','Asunci\u00f3n',46000,'new build'],p:['Will stage one match in Asunci\u00f3n','Hosts World Cup matches for the first time','The stadium is planned as a new build']}};
+var fl=$('flags');
+Object.keys(N).forEach(function(k){var n=N[k],b=document.createElement('button');b.className='flag';b.dataset.k=k;b.style.setProperty('--c',n.c);b.innerHTML='<span class=em>'+n.e+'</span>'+k;b.onclick=function(){nat(k)};fl.appendChild(b)});
+function nat(k){var n=N[k],s=n.st,h='';
+  Array.prototype.forEach.call(fl.children,function(b){b.classList.toggle('on',b.dataset.k===k)});
+  n.p.forEach(function(t){h+='<li>'+t+'</li>'});
+  var pn=$('panel');pn.style.setProperty('--c',n.c);pn.style.animation='none';void pn.offsetWidth;pn.style.animation='';
+  pn.innerHTML='<div><h3>'+n.e+' '+k+'</h3><em>'+n.r+' \u00b7 Capital: '+n.cap+'</em><ul>'+h+'</ul></div><div class=big><small>Biggest stadium</small><strong>'+s[0]+'</strong><em>'+s[1]+' \u00b7 '+s[3]+'</em><b id=cn>0</b><small>seats</small><div class=meter><i id=mt></i></div></div>';
+  setTimeout(function(){$('mt').style.width=(s[2]/1150)+'%'},50);
+  var t0=performance.now();(function f(t){var p=Math.min(1,(t-t0)/900);$('cn').textContent=Math.round(s[2]*p).toLocaleString();if(p<1)requestAnimationFrame(f)})(t0);}
+nat('Morocco');
+var U=[['Sleeps left','var(--r)','Nights until kickoff'],['Hours left','var(--y)','Hours until kickoff'],['Minutes left','var(--g)','Minutes until kickoff'],['Seconds left','var(--b)','Seconds until kickoff']];
+$('units').innerHTML=U.map(function(u,i){return '<div class=fact style=--c:'+u[1]+'><big id=u'+i+'>0</big><span><b>'+u[0]+'</b><br>'+u[2]+'</span></div>'}).join('');
+var Z=[['Casablanca','Africa/Casablanca','🇲🇦'],['Lisbon','Europe/Lisbon','🇵🇹'],['Madrid','Europe/Madrid','🇪🇸'],['Montevideo','America/Montevideo','🇺🇾'],['Buenos Aires','America/Argentina/Buenos_Aires','🇦🇷'],['Asunci\u00f3n','America/Asuncion','🇵🇾']];
+$('clocks').innerHTML=Z.map(function(z,i){return '<div class=fact style=--c:'+cols[i%4]+'><big class=clk id=k'+i+'>--</big><span>'+z[2]+' '+z[0]+'</span></div>'}).join('');
+function ut(){var d=Math.max(0,start-Date.now());[Math.ceil(d/864e5),Math.floor(d/36e5),Math.floor(d/6e4),Math.floor(d/1e3)].forEach(function(v,i){$('u'+i).textContent=v.toLocaleString()});
+  Z.forEach(function(z,i){try{$('k'+i).textContent=new Date().toLocaleTimeString('en-GB',{timeZone:z[1],hour:'2-digit',minute:'2-digit',second:'2-digit'})}catch(e){}})}
+ut();setInterval(ut,1000);
+var B=[['Hassan II Stadium','Casablanca, Morocco',115000,'var(--y)','🥇'],['Camp Nou','Barcelona, Spain',105000,'var(--r)','🥈'],['Estadio Monumental','Buenos Aires, Argentina',100000,'var(--b)','🥉'],['Bernab\u00e9u','Madrid, Spain',83186,'var(--g)','4.'],['Tangier Grand Stadium','Tangier, Morocco',75500,'var(--r)','5.']];
+$('top5').innerHTML=B.map(function(s){return '<div class=row style=--c:'+s[3]+'><div><b>'+s[4]+' '+s[0]+'</b><br><em>'+s[1]+'</em></div><div class=cap>'+s[2].toLocaleString()+'</div><div class=meter><i data-w='+(s[2]/1150)+'></i></div></div>'}).join('');
+new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)Array.prototype.forEach.call(e.target.querySelectorAll('i[data-w]'),function(i){i.style.width=i.dataset.w+'%'})})}).observe($('top5'));
+var Q=[['Which city hosts the opening centenary match?',['Casablanca','Lisbon','Montevideo','Madrid'],2],['Which stadium has the biggest planned capacity, 115,000?',['Camp Nou','Hassan II Stadium','Bernab\u00e9u','Estadio Monumental'],1],['Which host last staged a World Cup in 1982?',['Spain','Argentina','Uruguay','Portugal'],0],['Which World Cup is the 2030 edition?',['22nd','23rd','25th','24th'],3],['Who won the very first World Cup in 1930?',['Argentina','Uruguay','Spain','Morocco'],1]];
+var qi=0,sc=0;
+function qz(){var q=$('quiz');q.style.pointerEvents='';
+  if(qi>=Q.length){q.innerHTML='<small>Full time</small><h3>You scored '+sc+' out of '+Q.length+' \u26bd</h3><button id=rq>Play again</button>';$('rq').onclick=function(){qi=0;sc=0;qz()};if(sc>=4)burst(innerWidth/2,innerHeight/2);return}
+  var x=Q[qi],h='<small>Question '+(qi+1)+' of '+Q.length+'</small><h3>'+x[0]+'</h3><div class=tabs>';
+  x[1].forEach(function(o,i){h+='<button data-i='+i+'>'+o+'</button>'});
+  q.innerHTML=h+'</div>';
+  Array.prototype.forEach.call(q.querySelectorAll('.tabs button'),function(b){b.onclick=function(){q.style.pointerEvents='none';var ok=+b.dataset.i===x[2];if(ok)sc++;b.style.background=ok?'#1faa59':'#e4202b';b.style.color='#fff';setTimeout(function(){qi++;qz()},750)}})}
+qz();
+var T=[['🇪🇸','Spain'],['🇦🇷','Argentina'],['🇫🇷','France'],['🇧🇷','Brazil'],['🇵🇹','Portugal'],['🇲🇦','Morocco'],['🇩🇪','Germany'],['🇳🇱','Netherlands'],['🇮🇹','Italy'],['🇺🇾','Uruguay'],['🇺🇸','USA'],['🇯🇵','Japan'],['🇲🇽','Mexico'],['🇭🇷','Croatia']];
+function pk(n,fire){Array.prototype.forEach.call($('picks').children,function(b){b.classList.toggle('on',b.dataset.n===n)});$('pickmsg').textContent='Your champion pick: '+n+'. See you on 21 July 2030!';try{localStorage.setItem('wc30pick',n)}catch(e){}}
+T.forEach(function(t){var b=document.createElement('button');b.className='chip';b.dataset.n=t[1];b.textContent=t[0]+' '+t[1];b.onclick=function(e){pk(t[1]);burst(e.clientX,e.clientY)};$('picks').appendChild(b)});
+try{var sv=localStorage.getItem('wc30pick');if(sv)pk(sv)}catch(e){}
+var F=[['Born in 1930','Uruguay won the very first World Cup in 1930, on home soil.'],['Sixth time lucky','Morocco bid six times before winning the right to host.'],['Trophy since 1974','The same FIFA World Cup Trophy has been used in every edition since 1974.'],['Triple threat','Morocco, Paraguay and Portugal will host World Cup matches for the first time.'],['Big comebacks','Uruguay, Argentina and Spain host again for the first time since 1930, 1978 and 1982.'],['Three continents','The first World Cup hosted across more than one confederation.']];
+$('flips').innerHTML=F.map(function(f,i){return '<div class=flip style=--c:'+cols[i%4]+'><div class=f>'+f[0]+'</div><div class=b>'+f[1]+'</div></div>'}).join('');
+Array.prototype.forEach.call($('flips').children,function(c){c.onclick=function(){c.classList.toggle('on')}});
+$('tv').innerHTML=['🇬🇧 BBC and ITV','🇪🇸 Netflix','🇫🇷 M6 and beIN Sports','🇩🇪 Magenta Sport','🇳🇱 NOS','🇮🇪 RT\u00c9','🇦🇺 SBS','🇳🇿 TVNZ','🇨🇳 CCTV','🇮🇳 Zee','🇰🇷 JTBC','🇹🇭 MONOMAX Sports'].map(function(t){return '<span class=chip>'+t+'</span>'}).join('');
+$('sp2').innerHTML=['Adidas','Coca-Cola','Hyundai\u2013Kia','Qatar Airways','Visa','AB InBev','Mengniu Dairy'].map(function(t){return '<span class=chip>'+t+'</span>'}).join('');
+$('th').onclick=function(){var r=document.documentElement,l=r.dataset.theme?r.dataset.theme==='light':matchMedia('(prefers-color-scheme:light)').matches;r.dataset.theme=l?'dark':'light'};
+$('tp').onclick=function(){scrollTo({top:0,behavior:'smooth'})};
+$('sh').onclick=function(){var b=$('sh');try{if(navigator.share){navigator.share({title:document.title,url:location.href})}else{navigator.clipboard.writeText(location.href);b.textContent='\u2705';setTimeout(function(){b.textContent='🔗'},1400)}}catch(e){}};
+$("go").onclick=function(e){var r=e.target.getBoundingClientRect();burst(r.left+r.width/2,r.top)};
+$("logo").onclick=function(e){burst(e.clientX,e.clientY)};
+addEventListener("pointerdown",function(e){if(e.target.tagName!=="BUTTON")burst(e.clientX,e.clientY)});
+})();
+</script></body></html>
